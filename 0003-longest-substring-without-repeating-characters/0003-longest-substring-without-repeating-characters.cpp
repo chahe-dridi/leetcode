@@ -1,20 +1,24 @@
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
-        const int n = (int)s.size();
         int last[256] = {0};
-        int left = 0;
-        int best = 0;
-
-        for (int right = 0; right < n; ++right) {
-            const unsigned char c = s[right];
+        int left = 0, best = 0;
+        const int n = s.size();
+        
+        for (int i = 0; i < n; ++i) {
+            const int c = (unsigned char)s[i];
             const int prev = last[c];
-            if (prev > left) left = prev;
-            last[c] = right + 1;
-            const int len = right - left + 1;
-            if (len > best) best = len;
+            
+            if (prev > left) {
+                left = prev;
+            } else {
+                const int len = i - left + 1;
+                if (len > best) best = len;
+            }
+            last[c] = i + 1;
+            
+            if (best >= n - left) return best;
         }
-
         return best;
     }
 };
